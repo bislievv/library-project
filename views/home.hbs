@@ -1,0 +1,9 @@
+<h1>Аренда книг</h1>
+<ul class="books_menu">
+    {{#each data}}
+    <li>
+        <img class="books_image" src="{{image}}" alt="">
+        <a href="/users/books/{{_id}}">{{name}}</a>
+    </li>
+    {{/each}}
+</ul>

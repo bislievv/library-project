@@ -6,6 +6,7 @@ const router = Router();
 router.post("/admin/books", booksController.addBook);
 router.get("/admin/books", booksController.getBooks);
 router.delete("/admin/books/:id", booksController.deleteBook);
+router.post("/admin/books/:id", booksController.addImage);
 
 router.get("/users/books", booksController.userGetBooks);
 router.get("/users/books/:id", booksController.userGetCertain);

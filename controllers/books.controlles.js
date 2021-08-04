@@ -1,5 +1,6 @@
 const path = require("path");
 const Book = require("../models/Book.model");
+const Comment = require("../models/Comment.model");
 
 module.exports.booksController = {
   addBook: async (req, res) => {
@@ -32,23 +33,29 @@ module.exports.booksController = {
   },
   userGetBooks: async (req, res) => {
     try {
-      const data = await Book.find({});
-      res.json(data);
+      const data = await Book.find({}).lean();
+      res.render("home", {
+        data,
+      });
     } catch (err) {
       res.json(err);
     }
   },
   userGetCertain: async (req, res) => {
     try {
-      const data = await Book.findById(req.params.id);
-      res.json(data);
+      const com = await Comment.find({ book: req.params.id }).lean();
+      const data = await Book.findById(req.params.id).lean();
+      res.render("singleBook", {
+        data,
+        com,
+      });
     } catch (err) {
       res.json(err);
     }
   },
   userGetByGenre: async (req, res) => {
     try {
-      const data = await Book.find({ genre: req.params.id });
+      const data = await Book.find({ category: req.params.id });
       res.json(data);
     } catch (err) {
       res.json(err);

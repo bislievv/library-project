@@ -24,10 +24,13 @@
     "prettier": "^2.3.2"
   },
   "eslintConfig": {
-    "extends": ["airbnb/base", "prettier"],
+    "extends": [
+      "airbnb/base",
+      "prettier"
+    ],
     "rules": {
-      "no-console":"off",
-      "no-unused-vars":"warn"
+      "no-console": "off",
+      "no-unused-vars": "warn"
     }
   }
 }

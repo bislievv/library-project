@@ -53,7 +53,7 @@ module.exports.usersController = {
       });
 
       await Book.findByIdAndUpdate(req.body.rentedBooks, {
-        rented: "",
+        rented: null,
       });
 
       await User.findByIdAndUpdate(req.params.id, {

@@ -4,6 +4,7 @@ module.exports.commentsController = {
   addComment: async (req, res) => {
     try {
       await Comment.create({
+        name: req.body.name,
         text: req.body.text,
         user: req.body.user,
         book: req.body.book,
