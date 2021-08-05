@@ -1,0 +1,8 @@
+<h1>Добрового времени суток, Босс.</h1>
+<img src="https://i.pinimg.com/236x/5d/12/dd/5d12dd6d4006da1e0e37d112ff448af3.jpg" alt="" >
+<h2>Вот список пользователей:</h2>
+<ul class="users_link">
+  {{#each data}}
+    <li><a href="/admin/users/{{_id}}">{{name}}</a></li>
+  {{/each}}
+</ul>

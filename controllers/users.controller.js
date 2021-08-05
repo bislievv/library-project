@@ -22,10 +22,10 @@ module.exports.usersController = {
       console.log(e);
     }
   },
-  takeBook: async (req, res) => {
+  rentBook: async (req, res) => {
     try {
-      const user = await User.findById(req.params.id);
-      const book = await Book.findById(req.body.rentedBooks);
+      const user = await User.findById(req.params.userId);
+      const book = await Book.findById(req.params.bookId);
 
       if (user.isBlocked) {
         res.json("Вы заблокированы :)");
@@ -40,7 +40,7 @@ module.exports.usersController = {
         await Book.findByIdAndUpdate(req.body.rentedBooks, {
           rented: req.params.id,
         });
-        res.json("Вы успешно арендовали книгу");
+        res.redirect(`localhost:3000/users/books/${book}`);
       }
     } catch (err) {
       res.json(err);
@@ -49,18 +49,62 @@ module.exports.usersController = {
   selectBook: async (req, res) => {
     try {
       await User.findByIdAndUpdate(req.params.id, {
-        $pull: { rentedBooks: req.body.rentedBooks },
-      });
-
-      await Book.findByIdAndUpdate(req.body.rentedBooks, {
-        rented: null,
-      });
-
-      await User.findByIdAndUpdate(req.params.id, {
+        rentedBooks: [],
         isBlocked: true,
       });
 
-      res.json("Юзер забанен");
+      await Book.findByIdAndUpdate(req.body.blockedId, {
+        rented: null,
+      });
+
+      res.redirect(
+        "http://localhost:3000/admin/users/610aab4bc5a3a519d44e5f83"
+      );
+    } catch (err) {
+      res.json(err);
+    }
+  },
+  returnBook: async (req, res) => {
+    try {
+      await User.findByIdAndUpdate(req.params.id, {
+        $pull: { rentedBooks: req.body.returnId },
+      });
+      await Book.findByIdAndUpdate(req.body.returnId, {
+        rented: null,
+      });
+      res.redirect(
+        "http://localhost:3000/users/books/610ac99df182fc2208aced57"
+      );
+    } catch (err) {
+      res.json(err);
+    }
+  },
+  getUsers: async (req, res) => {
+    try {
+      const data = await User.find({}).lean();
+      res.render("adminka", {
+        data,
+      });
+    } catch (err) {
+      res.json(err);
+    }
+  },
+  getUser: async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id).lean();
+      res.render("singleUser", {
+        user,
+      });
+    } catch (err) {
+      res.json(err);
+    }
+  },
+  getAllUsers: async (req, res) => {
+    try {
+      const data = await User.find({}).lean();
+      res.render("profile", {
+        data,
+      });
     } catch (err) {
       res.json(err);
     }

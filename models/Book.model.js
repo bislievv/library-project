@@ -13,7 +13,7 @@ const bookSchema = mongoose.Schema(
       ref: "User",
     },
   },
-  { timesStamps: true }
+  { timestamps: true }
 );
 
 const Book = mongoose.model("Book", bookSchema);

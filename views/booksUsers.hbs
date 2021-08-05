@@ -1,9 +1,9 @@
-<h1>Аренда книг</h1>
+<h1>Все книги мира</h1>
 <ul class="books_menu">
     {{#each data}}
     <li>
         <img class="books_image" src="{{image}}" alt="">
-        <a href="#">{{name}}</a>
+        <a href="{{_id}}">{{name}}</a>
     </li>
     {{/each}}
 </ul>

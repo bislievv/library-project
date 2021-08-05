@@ -1,6 +1,7 @@
 const path = require("path");
 const Book = require("../models/Book.model");
 const Comment = require("../models/Comment.model");
+const User = require("../models/User.model");
 
 module.exports.booksController = {
   addBook: async (req, res) => {
@@ -74,6 +75,18 @@ module.exports.booksController = {
           await Book.findByIdAndUpdate(req.params.id, { image: newFileName });
           res.json("Файл загружен");
         }
+      });
+    } catch (err) {
+      res.json(err);
+    }
+  },
+  certainUserGetBooks: async (req, res) => {
+    try {
+      const users = await User.find({ user: req.params.userId });
+      const data = await Book.find({}).lean();
+      res.render("booksUsers", {
+        data,
+        users,
       });
     } catch (err) {
       res.json(err);

@@ -4,7 +4,7 @@ const genreSchema = mongoose.Schema(
   {
     name: String,
   },
-  { timesStamps: true }
+  { timestamps: true }
 );
 
 const Genre = mongoose.model("Genre", genreSchema);

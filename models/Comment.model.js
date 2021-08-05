@@ -13,7 +13,7 @@ const commentSchema = mongoose.Schema(
       ref: "Book",
     },
   },
-  { timesStamps: true }
+  { timestamps: true }
 );
 
 const Comment = mongoose.model("Comment", commentSchema);
