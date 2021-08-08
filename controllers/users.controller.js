@@ -34,13 +34,15 @@ module.exports.usersController = {
       } else if (book.rented) {
         res.json("Эта книга уже кем-то арендована");
       } else {
-        await User.findByIdAndUpdate(req.params.id, {
-          $push: { rentedBooks: req.body.rentedBooks },
+        await User.findByIdAndUpdate(req.params.userId, {
+          $push: { rentedBooks: req.params.bookId },
         });
-        await Book.findByIdAndUpdate(req.body.rentedBooks, {
-          rented: req.params.id,
+        await Book.findByIdAndUpdate(req.params.bookId, {
+          rented: req.params.bookId,
         });
-        res.redirect(`localhost:3000/users/books/${book}`);
+        res.redirect(
+          `http://localhost:3000/users/${user._id}/books/${book._id}`
+        );
       }
     } catch (err) {
       res.json(err);
@@ -48,33 +50,32 @@ module.exports.usersController = {
   },
   selectBook: async (req, res) => {
     try {
+      const user = await User.findById(req.params.id);
+
       await User.findByIdAndUpdate(req.params.id, {
         rentedBooks: [],
         isBlocked: true,
       });
 
-      await Book.findByIdAndUpdate(req.body.blockedId, {
-        rented: null,
-      });
+      await Book.updateMany({ rented: user._id }, { rented: null });
 
-      res.redirect(
-        "http://localhost:3000/admin/users/610aab4bc5a3a519d44e5f83"
-      );
+      res.redirect(`http://localhost:3000/admin/users/${user._id}/`);
     } catch (err) {
       res.json(err);
     }
   },
   returnBook: async (req, res) => {
     try {
-      await User.findByIdAndUpdate(req.params.id, {
-        $pull: { rentedBooks: req.body.returnId },
+      const user = await User.findById(req.params.userId);
+      const book = await Book.findById(req.params.bookId);
+
+      await User.findByIdAndUpdate(req.params.userId, {
+        $pull: { rentedBooks: req.params.bookId },
       });
-      await Book.findByIdAndUpdate(req.body.returnId, {
+      await Book.findByIdAndUpdate(req.params.bookId, {
         rented: null,
       });
-      res.redirect(
-        "http://localhost:3000/users/books/610ac99df182fc2208aced57"
-      );
+      res.redirect(`http://localhost:3000/users/${user._id}/books/${book._id}`);
     } catch (err) {
       res.json(err);
     }
@@ -105,6 +106,16 @@ module.exports.usersController = {
       res.render("profile", {
         data,
       });
+    } catch (err) {
+      res.json(err);
+    }
+  },
+  unblockedUser: async (req, res) => {
+    try {
+      await User.findByIdAndUpdate(req.params.id, {
+        isBlocked: false,
+      });
+      res.redirect(`http://localhost:3000/admin/users/${req.params.id}/`);
     } catch (err) {
       res.json(err);
     }

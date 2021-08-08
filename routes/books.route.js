@@ -10,7 +10,7 @@ router.post("/admin/books/:id", booksController.addImage);
 
 router.get("/users/guest/books", booksController.userGetBooks);
 router.get("/users/:userId/books/", booksController.certainUserGetBooks);
-router.get("/users/:userId/books/:id", booksController.userGetCertain);
+router.get("/users/:userId/books/:id/", booksController.userGetCertain);
 router.get("/users/genres/:id", booksController.userGetByGenre);
 
 module.exports = router;

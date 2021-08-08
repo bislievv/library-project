@@ -64,11 +64,17 @@ body {
   border: 2px solid #9b4222;
   border-radius: 4px;
   display: inline-block;
-  padding: 5px;
 }
 .users_link li a {
-  color: #9b4222;
+  color: #9b2226;
   text-decoration: none;
+  display: block;
+  padding: 5px;
+}
+
+.users_link li a:hover,.users_link li:hover{
+  background-color:black;
+  color:white;
 }
 .btn_take {
   font-weight: 700;
